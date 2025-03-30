@@ -1,0 +1,63 @@
+body {
+  overflow: hidden;
+  background-color: #494949;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100vh; /* Set the body to take up the full height of the viewport */
+}
+
+canvas {
+  box-sizing: unset;
+  image-rendering: pixelated;
+  background-color: #ffff;
+  transform: scale(5);
+  background-color: #ffffff;
+  image-rendering: pixelated;
+}
+/* 
+body {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  margin: 0;
+  gap: 10px;
+}
+
+.card {
+  width: 100px;
+  height: 150px;
+  border-radius: 10px;
+  border: 2px solid #000;
+  background-color: #fff;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  padding: 5px;
+  position: relative;
+  font-weight: bold;
+}
+
+.card .corner {
+  font-size: 20px;
+  position: absolute;
+  top: 5px;
+  left: 5px;
+}
+
+.card .center {
+  font-size: 55px;
+  top: 33%;
+  position: relative;
+}
+
+.red {
+  color: red;
+}
+
+.black {
+  color: black;
+} 
+*/
