@@ -1,4 +1,4 @@
-cardDeck = ["jb", "jb", "jr", "jr","qb","qb", "qr","qr", "kb", "kb","kr", "kr"];
+let cardDeck = ["jb", "jb", "jr", "jr","qb","qb", "qr","qr", "kb", "kb","kr", "kr"];
 for (let i = 1; i < 11; i++) {
     cardDeck.push(`${i}b`);
     cardDeck.push(`${i}b`);
@@ -10,10 +10,18 @@ function loadImage(src) {
     img.src = src;
     return img;
 }
-
+function createAudio(src) {
+    var audio = document.createElement('audio');
+    audio.volume = 1;
+    //audio.loop   = options.loop;
+    audio.src = src;
+    audio.playbackRate = 7;
+    return audio;
+}
 for (let i = 0; i < cardDeck.length; i ++) {
     cardDeck[i] = loadImage(`./assets/${cardDeck[i]}.png`);
 }
+let flipCardSound = createAudio("./sound/flipcard.mp3");
 
 //https://stackoverflow.com/questions/2450954/how-to-randomize-shuffle-a-javascript-array
 function shuffle(array) {
@@ -34,7 +42,7 @@ const canvas = document.getElementById('canvas');
 
 const ctx = canvas.getContext('2d');
 
-canvas.width =165;
+canvas.width =200;
 canvas.height = 100;
 
 const halfWidth = canvas.width / 2;
@@ -86,7 +94,7 @@ let xOffset = 12;
 let yOffset = 10;
 let gap = 5;
 let startCoords = {
-    x: (cardWidth+gap)*7-9,
+    x: (cardWidth+gap)*7 + 9,
     y: (cardHeight-8)*5+yOffset
 }
 
@@ -99,9 +107,6 @@ for (let i = 0; i < 5; i++) {
     }
 }
 
-function placeCards() {
-
-}
 let cardCounter = 0;
 function gameUpdate() {
     if (cardDeck[cardCounter].finished != true) {
@@ -112,6 +117,7 @@ function gameUpdate() {
         console.log("Why");
         if (cardCounter < 34) {
             cardCounter++;
+            flipCardSound.play();
         }
     }
 }
@@ -121,7 +127,7 @@ function gameDraw() {
     for (let i = 0; i < 35; i++) {
         cardDeck[i].draw();
     }
-    ctx.drawImage(backImage,(cardWidth+gap)*7-9,(cardHeight-8)*5+yOffset);
+    ctx.drawImage(backImage,startCoords.x,startCoords.y);
 }
 
 function gameLoop() {
