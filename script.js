@@ -37,7 +37,6 @@ function shuffle(array) {
     }
 }
 shuffle(cardDeck);
-console.log(cardDeck);
 const canvas = document.getElementById('canvas');
 
 const ctx = canvas.getContext('2d');
@@ -58,6 +57,23 @@ function vec2(x, y) {
     return {x: x, y: y};
 }
 
+let cardConvert = {
+    "1": 1,
+    "2": 2,
+    "3": 3,
+    "4": 4,
+    "5": 5,
+    "6": 6,
+    "7": 7,
+    "8": 8,
+    "9": 9,
+    "10": 10,
+    "j": 11,
+    "q": 12,
+    "k": 13,
+
+}
+
 class Card {
     constructor(startCoords, endCoords, cardImage) {
         this.startCoords = startCoords;
@@ -68,12 +84,11 @@ class Card {
         this.finished = false;
         this.distance = Math.hypot(this.endCoords.x - this.startCoords.x, this.endCoords.y - this.startCoords.y)
         this.currentCoords = vec2(this.startCoords.x, this.startCoords.y);
+        this.name = this.cardImage.src.split("/");
+        this.name = this.name[this.name.length -1].split(".png")[0];
     }
     update() {
         let distanceTraveled = Math.hypot(this.currentCoords.x - this.startCoords.x, this.currentCoords.y - this.startCoords.y);
-        console.log(this.currentCoords);
-        console.log(distanceTraveled);
-        console.log(this.distance);
         if (distanceTraveled > this.distance) {
             this.currentCoords.x = this.endCoords.x;
             this.currentCoords.y = this.endCoords.y;
@@ -81,7 +96,6 @@ class Card {
         } else {
             this.currentCoords.x += this.speed * Math.cos(this.angle);
             this.currentCoords.y += this.speed * Math.sin(this.angle);
-            console.log("HELLO");
         }
     }
 
@@ -99,35 +113,50 @@ let startCoords = {
 }
 
 let cardCount = 0;
+let cardGrid = [];
 for (let i = 0; i < 5; i++) {
+    let cardRow = [];
     for (let j = 0; j < 7; j++) {
         let card = cardDeck[cardCount];
         cardDeck[cardCount] = new Card(startCoords,vec2(xOffset + (gap+cardWidth)*j, yOffset + (cardHeight - 13)*i), card)
+        cardRow.push(cardDeck[cardCount]);
         cardCount++;
     }
+    cardGrid.push(cardRow);
+    cardRow = [];
 }
-
+let clickCards = [];
+for (let col = 0; col < cardGrid[0].length ; col++) {
+    for (let row = 0; row < cardGrid.length; row++) {
+        console.log(`Row: ${row}, Col: ${col}`);
+        if (row == cardGrid.length -1 ) {
+            clickCards.push(cardGrid[row][col]);
+        }
+    }
+}
+console.log(clickCards);
+console.log(cardGrid);
 let cardCounter = 0;
 function gameUpdate() {
     if (cardDeck[cardCounter].finished != true) {
-        console.log(cardCounter);
-        console.log(cardDeck[cardCounter].finished);
         cardDeck[cardCounter].update();
     } else if (cardDeck[cardCounter].finished == true) {
-        console.log("Why");
         if (cardCounter < 34) {
             cardCounter++;
             flipCardSound.play();
         }
     }
 }
-console.log(cardDeck);
 
 function gameDraw() {
     for (let i = 0; i < 35; i++) {
         cardDeck[i].draw();
     }
     ctx.drawImage(backImage,startCoords.x,startCoords.y);
+    for (let i = 0; i < clickCards.length; i++) {
+        let clickCard = clickCards[i];
+        ctx.fillRect(clickCard.endCoords.x, clickCard.endCoords.y, cardWidth,cardHeight)
+    }
 }
 
 function gameLoop() {
@@ -139,4 +168,29 @@ function gameLoop() {
     gameDraw()
     
 }
+function getMousePosition(canvas, event) {
+    let rect = canvas.getBoundingClientRect();
+    let x = (event.clientX - rect.left) / 8 ;
+    let y = (event.clientY - rect.top) / 8;
+    return {x: x, y: y};
+}
+
+document.addEventListener('pointerdown', (event) => {
+    console.log("MOUSE CLICKED");
+    var mouseCoords = getMousePosition(canvas, event);
+    console.log(mouseCoords);
+    for (let i = 0; i < clickCards.length; i++) {
+        
+    }
+    // if (die && (mouseCoords.x < restartX + retryButton.width && mouseCoords.x > restartX) && 
+    // (mouseCoords.y > restartY && mouseCoords.y < restartY + retryButton.height)) {
+    //     console.log("Clicked restart");
+    //     die = false;
+    //     POINTS = 0;
+    //     totalClicked = 0;
+    //     currentFruit = newFruit();
+    //     selecter.arrowPoint = 1;
+    // }
+});
+
 gameLoop();
