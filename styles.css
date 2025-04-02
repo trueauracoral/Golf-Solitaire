@@ -11,7 +11,7 @@ canvas {
   box-sizing: unset;
   image-rendering: pixelated;
   background-color: #ffff;
-  transform: scale(5);
+  transform: scale(4);
   background-color: #ffffff;
   image-rendering: pixelated;
 }

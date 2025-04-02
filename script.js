@@ -41,7 +41,7 @@ const canvas = document.getElementById('canvas');
 
 const ctx = canvas.getContext('2d');
 
-canvas.width =200;
+canvas.width =175;
 canvas.height = 100;
 
 const halfWidth = canvas.width / 2;
@@ -86,6 +86,7 @@ class Card {
         this.currentCoords = vec2(this.startCoords.x, this.startCoords.y);
         this.name = this.cardImage.src.split("/");
         this.name = this.name[this.name.length -1].split(".png")[0];
+        this.number = cardConvert[this.name];
     }
     update() {
         let distanceTraveled = Math.hypot(this.currentCoords.x - this.startCoords.x, this.currentCoords.y - this.startCoords.y);
@@ -104,7 +105,7 @@ class Card {
     }
 }
 
-let xOffset = 12;
+let xOffset = 5;
 let yOffset = 10;
 let gap = 5;
 let startCoords = {
@@ -125,17 +126,16 @@ for (let i = 0; i < 5; i++) {
     cardGrid.push(cardRow);
     cardRow = [];
 }
+console.log(cardGrid);
 let clickCards = [];
 for (let col = 0; col < cardGrid[0].length ; col++) {
     for (let row = 0; row < cardGrid.length; row++) {
-        console.log(`Row: ${row}, Col: ${col}`);
         if (row == cardGrid.length -1 ) {
             clickCards.push(cardGrid[row][col]);
         }
     }
 }
 console.log(clickCards);
-console.log(cardGrid);
 let cardCounter = 0;
 function gameUpdate() {
     if (cardDeck[cardCounter].finished != true) {
@@ -155,7 +155,7 @@ function gameDraw() {
     ctx.drawImage(backImage,startCoords.x,startCoords.y);
     for (let i = 0; i < clickCards.length; i++) {
         let clickCard = clickCards[i];
-        ctx.fillRect(clickCard.endCoords.x, clickCard.endCoords.y, cardWidth,cardHeight)
+        //ctx.fillRect(clickCard.endCoords.x, clickCard.endCoords.y, cardWidth,cardHeight)
     }
 }
 
@@ -170,17 +170,24 @@ function gameLoop() {
 }
 function getMousePosition(canvas, event) {
     let rect = canvas.getBoundingClientRect();
-    let x = (event.clientX - rect.left) / 8 ;
-    let y = (event.clientY - rect.top) / 8;
+    let x = (event.clientX - rect.left) / 5 +5;
+    let y = (event.clientY - rect.top) / 5;
     return {x: x, y: y};
 }
 
 document.addEventListener('pointerdown', (event) => {
-    console.log("MOUSE CLICKED");
+    //console.log("MOUSE CLICKED");
     var mouseCoords = getMousePosition(canvas, event);
     console.log(mouseCoords);
+    mouseCoords.x += xOffset;
+    console.log(clickCards);
+    //console.log(clickCards);
     for (let i = 0; i < clickCards.length; i++) {
-        
+        if ((mouseCoords.x < clickCards[i].endCoords.x + cardWidth && mouseCoords.x > clickCards[i].endCoords.x) &&
+        (mouseCoords.y > clickCards[i].endCoords.y && mouseCoords.y < clickCards[i].endCoords.y + cardHeight)) {
+            console.log(clickCards[i])
+            console.log(`You clicked ${clickCards[i].name}`)
+        }
     }
     // if (die && (mouseCoords.x < restartX + retryButton.width && mouseCoords.x > restartX) && 
     // (mouseCoords.y > restartY && mouseCoords.y < restartY + retryButton.height)) {
