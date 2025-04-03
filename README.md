@@ -5,7 +5,8 @@ This is Golf Solitaire written in JS canvas
 - [X] Create Assets
 - [X] Draw Cards
 - [X] Animate Cards going to position
-- [ ] Be able to click on cards and set active card
+- [X] Be able to detect click on cards
+- [ ] set active card
 - [ ] Move the card from the field to the bottom in a line.
 - [ ] Make sure that you can only click card that matches your active
 - [ ] Count how many cards are in the pile
@@ -18,3 +19,5 @@ This is Golf Solitaire written in JS canvas
 # Dev Log
 ## 3/29/25
 Implemented card assets, shuffled them and also animated them going onto the screen from the card pile. That took a while.
+## 4/2/25
+I can now detect click on theorettically clickable cards.

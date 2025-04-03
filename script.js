@@ -153,9 +153,10 @@ function gameDraw() {
         cardDeck[i].draw();
     }
     ctx.drawImage(backImage,startCoords.x,startCoords.y);
+    ctx.strokeStyle = "red"; // Bounding box color
     for (let i = 0; i < clickCards.length; i++) {
         let clickCard = clickCards[i];
-        //ctx.fillRect(clickCard.endCoords.x, clickCard.endCoords.y, cardWidth,cardHeight)
+        ctx.strokeRect(clickCard.endCoords.x, clickCard.endCoords.y, cardWidth, cardHeight);
     }
 }
 
@@ -170,8 +171,8 @@ function gameLoop() {
 }
 function getMousePosition(canvas, event) {
     let rect = canvas.getBoundingClientRect();
-    let x = (event.clientX - rect.left) / 5 +5;
-    let y = (event.clientY - rect.top) / 5;
+    let x = Math.floor((event.clientX - rect.left) / 4) + 1;
+    let y = Math.floor((event.clientY - rect.top) / 4);
     return {x: x, y: y};
 }
 
@@ -179,7 +180,6 @@ document.addEventListener('pointerdown', (event) => {
     //console.log("MOUSE CLICKED");
     var mouseCoords = getMousePosition(canvas, event);
     console.log(mouseCoords);
-    mouseCoords.x += xOffset;
     console.log(clickCards);
     //console.log(clickCards);
     for (let i = 0; i < clickCards.length; i++) {
