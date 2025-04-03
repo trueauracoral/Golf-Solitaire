@@ -80,13 +80,13 @@ class Card {
         this.endCoords = endCoords;
         this.cardImage = cardImage;
         this.angle = Math.atan2(this.endCoords.y-this.startCoords.y, this.endCoords.x-this.startCoords.x);
-        this.speed = 15;
+        this.speed = 30;
         this.finished = false;
         this.distance = Math.hypot(this.endCoords.x - this.startCoords.x, this.endCoords.y - this.startCoords.y)
         this.currentCoords = vec2(this.startCoords.x, this.startCoords.y);
         this.name = this.cardImage.src.split("/");
         this.name = this.name[this.name.length -1].split(".png")[0];
-        this.number = cardConvert[this.name];
+        this.number = cardConvert[this.name[0]];
     }
     update() {
         let distanceTraveled = Math.hypot(this.currentCoords.x - this.startCoords.x, this.currentCoords.y - this.startCoords.y);
@@ -153,11 +153,11 @@ function gameDraw() {
         cardDeck[i].draw();
     }
     ctx.drawImage(backImage,startCoords.x,startCoords.y);
-    ctx.strokeStyle = "red"; // Bounding box color
-    for (let i = 0; i < clickCards.length; i++) {
-        let clickCard = clickCards[i];
-        ctx.strokeRect(clickCard.endCoords.x, clickCard.endCoords.y, cardWidth, cardHeight);
-    }
+    // ctx.strokeStyle = "red"; // Bounding box color
+    // for (let i = 0; i < clickCards.length; i++) {
+    //     let clickCard = clickCards[i];
+    //     ctx.strokeRect(clickCard.endCoords.x, clickCard.endCoords.y, cardWidth, cardHeight);
+    // }
 }
 
 function gameLoop() {
