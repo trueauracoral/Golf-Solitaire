@@ -80,13 +80,14 @@ class Card {
         this.endCoords = endCoords;
         this.cardImage = cardImage;
         this.angle = Math.atan2(this.endCoords.y-this.startCoords.y, this.endCoords.x-this.startCoords.x);
-        this.speed = 30;
+        this.speed = 2;
         this.finished = false;
         this.distance = Math.hypot(this.endCoords.x - this.startCoords.x, this.endCoords.y - this.startCoords.y)
         this.currentCoords = vec2(this.startCoords.x, this.startCoords.y);
         this.name = this.cardImage.src.split("/");
         this.name = this.name[this.name.length -1].split(".png")[0];
         this.number = cardConvert[this.name[0]];
+        this.clicked = false;
     }
     update() {
         let distanceTraveled = Math.hypot(this.currentCoords.x - this.startCoords.x, this.currentCoords.y - this.startCoords.y);
@@ -128,21 +129,35 @@ for (let i = 0; i < 5; i++) {
 }
 console.log(cardGrid);
 let clickCards = [];
-for (let col = 0; col < cardGrid[0].length ; col++) {
-    for (let row = 0; row < cardGrid.length; row++) {
-        if (row == cardGrid.length -1 ) {
-            clickCards.push(cardGrid[row][col]);
+function findClickable() {
+    clickCards = [];
+    for (let col = 0; col < cardGrid[0].length ; col++) {
+        for (let row = 0; row < cardGrid.length; row++) {
+            if (row == cardGrid.length -1 ) {
+                let goodRow = 0;
+                for (let card = row; card > 0; card--) {
+                    if (cardGrid[card][col].clicked != true) {
+                        console.log(card);
+                        goodRow = card;
+                        break;
+                    }
+                }
+                clickCards.push({"row": goodRow, "col": col});
+            }
         }
     }
+    console.log(clickCards);
 }
-console.log(clickCards);
+
+findClickable();
+
 let cardCounter = 0;
 function gameUpdate() {
-    if (cardDeck[cardCounter].finished != true) {
-        cardDeck[cardCounter].update();
-    } else if (cardDeck[cardCounter].finished == true) {
-        if (cardCounter < 34) {
-            cardCounter++;
+    console.log(cardDeck);
+    for (let card = 0; card < 35; card++) {
+        if (cardDeck[card].finished != true) {
+            cardDeck[card].update();
+        } else if (cardDeck[card].finished == true) {
             flipCardSound.play();
         }
     }
@@ -153,11 +168,11 @@ function gameDraw() {
         cardDeck[i].draw();
     }
     ctx.drawImage(backImage,startCoords.x,startCoords.y);
-    // ctx.strokeStyle = "red"; // Bounding box color
-    // for (let i = 0; i < clickCards.length; i++) {
-    //     let clickCard = clickCards[i];
-    //     ctx.strokeRect(clickCard.endCoords.x, clickCard.endCoords.y, cardWidth, cardHeight);
-    // }
+    ctx.strokeStyle = "red"; // Bounding box color
+    for (let i = 0; i < clickCards.length; i++) {
+        let clickCard = cardGrid[clickCards[i].row][clickCards[i].col];
+        ctx.strokeRect(parseInt(clickCard.endCoords.x), clickCard.endCoords.y, cardWidth, cardHeight);
+    }
 }
 
 function gameLoop() {
@@ -183,10 +198,16 @@ document.addEventListener('pointerdown', (event) => {
     console.log(clickCards);
     //console.log(clickCards);
     for (let i = 0; i < clickCards.length; i++) {
-        if ((mouseCoords.x < clickCards[i].endCoords.x + cardWidth && mouseCoords.x > clickCards[i].endCoords.x) &&
-        (mouseCoords.y > clickCards[i].endCoords.y && mouseCoords.y < clickCards[i].endCoords.y + cardHeight)) {
-            console.log(clickCards[i])
-            console.log(`You clicked ${clickCards[i].name}`)
+        let clickableCard = cardGrid[clickCards[i].row][clickCards[i].col];
+        if ((mouseCoords.x < clickableCard.endCoords.x + cardWidth && mouseCoords.x > clickableCard.endCoords.x) &&
+        (mouseCoords.y > clickableCard.endCoords.y && mouseCoords.y < clickableCard.endCoords.y + cardHeight)) {
+            console.log(clickableCard);
+            console.log(`You clicked ${clickableCard.name}`);
+            clickableCard.clicked = true;
+            clickableCard.startCoords = vec2(clickableCard.currentCoords.x, clickableCard.currentCoords.y);
+            clickableCard.endCoords = vec2(startCoords.x - 20, startCoords.y);
+            clickableCard.finished = false;
+            findClickable();
         }
     }
     // if (die && (mouseCoords.x < restartX + retryButton.width && mouseCoords.x > restartX) && 
