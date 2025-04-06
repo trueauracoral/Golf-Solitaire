@@ -52,6 +52,7 @@ let cardHeight = 21;
 ctx.imageSmoothingEnabled= false
 
 let backImage = loadImage("./assets/back.png");
+let hiddenImage = loadImage("./assets/hiddencard.png")
 
 function vec2(x, y) {
     return {x: x, y: y};
@@ -71,18 +72,18 @@ let cardConvert = {
     "j": 11,
     "q": 12,
     "k": 13,
-
 }
+let lastClickedCard = null;
 
 class Card {
     constructor(startCoords, endCoords, cardImage) {
         this.startCoords = startCoords;
         this.endCoords = endCoords;
         this.cardImage = cardImage;
-        this.angle = Math.atan2(this.endCoords.y-this.startCoords.y, this.endCoords.x-this.startCoords.x);
+        this.angle = 0;
         this.speed = 2;
         this.finished = false;
-        this.distance = Math.hypot(this.endCoords.x - this.startCoords.x, this.endCoords.y - this.startCoords.y)
+        this.distance = 0;
         this.currentCoords = vec2(this.startCoords.x, this.startCoords.y);
         this.name = this.cardImage.src.split("/");
         this.name = this.name[this.name.length -1].split(".png")[0];
@@ -90,6 +91,8 @@ class Card {
         this.clicked = false;
     }
     update() {
+        this.angle =  Math.atan2(this.endCoords.y-this.startCoords.y, this.endCoords.x-this.startCoords.x);
+        this.distance = Math.hypot(this.endCoords.x - this.startCoords.x, this.endCoords.y - this.startCoords.y)
         let distanceTraveled = Math.hypot(this.currentCoords.x - this.startCoords.x, this.currentCoords.y - this.startCoords.y);
         if (distanceTraveled > this.distance) {
             this.currentCoords.x = this.endCoords.x;
@@ -153,7 +156,7 @@ findClickable();
 
 let cardCounter = 0;
 function gameUpdate() {
-    console.log(cardDeck);
+    //console.log(cardDeck);
     for (let card = 0; card < 35; card++) {
         if (cardDeck[card].finished != true) {
             cardDeck[card].update();
@@ -165,7 +168,15 @@ function gameUpdate() {
 
 function gameDraw() {
     for (let i = 0; i < 35; i++) {
-        cardDeck[i].draw();
+        if (cardDeck[i].clicked == false) {
+            cardDeck[i].draw();
+        }
+    }
+    if (lastClickedCard) {
+        lastClickedCard.draw();
+    }
+    for (let i = 0; i < offsetCounter; i++) {
+        ctx.drawImage(hiddenImage, startCoords.x-27-2*i+cardWidth, startCoords.y);
     }
     ctx.drawImage(backImage,startCoords.x,startCoords.y);
     ctx.strokeStyle = "red"; // Bounding box color
@@ -191,6 +202,7 @@ function getMousePosition(canvas, event) {
     return {x: x, y: y};
 }
 
+let offsetCounter = 0;
 document.addEventListener('pointerdown', (event) => {
     //console.log("MOUSE CLICKED");
     var mouseCoords = getMousePosition(canvas, event);
@@ -205,20 +217,14 @@ document.addEventListener('pointerdown', (event) => {
             console.log(`You clicked ${clickableCard.name}`);
             clickableCard.clicked = true;
             clickableCard.startCoords = vec2(clickableCard.currentCoords.x, clickableCard.currentCoords.y);
-            clickableCard.endCoords = vec2(startCoords.x - 20, startCoords.y);
+            clickableCard.endCoords = vec2(startCoords.x -25 - 2*offsetCounter, startCoords.y);
+            offsetCounter++;
             clickableCard.finished = false;
+            clickableCard.speed = 15;
             findClickable();
+            lastClickedCard = clickableCard;
         }
     }
-    // if (die && (mouseCoords.x < restartX + retryButton.width && mouseCoords.x > restartX) && 
-    // (mouseCoords.y > restartY && mouseCoords.y < restartY + retryButton.height)) {
-    //     console.log("Clicked restart");
-    //     die = false;
-    //     POINTS = 0;
-    //     totalClicked = 0;
-    //     currentFruit = newFruit();
-    //     selecter.arrowPoint = 1;
-    // }
 });
 
 gameLoop();
