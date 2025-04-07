@@ -7,32 +7,40 @@
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-  <!--
-    <div class="card red">
-      <div class="corner">5</div>
-      <div class="center">5</div>
-    </div>
-    
-    <div class="card black">
-      <div class="corner">K</div>
-      <div class="center">K</div>
-    </div>
-    
-    <div class="card red">
-      <div class="corner">Q</div>
-      <div class="center">Q</div>
-    </div>
-    
-    <div class="card black">
-      <div class="corner">J</div>
-      <div class="center">J</div>
-    </div>
-    <div class="card black">
-        <div class="corner">J</div>
-        <div class="center">J</div>
-      </div>
-  -->
-  <canvas id="canvas"></canvas>
+  <h1>Golf Solitaire</h1>
+  <div id="game-container">
+    <canvas id="canvas"></canvas>
+  </div>
+  <div id="tutorial">
+    <h2>Tutorial:</h2>
+    <p>This is a JS canvas version of the Golf Solitaire Game. This is a numerical game. Every card can match its adjacent card in sequential order. That can be:</p>
+    <p>5 -> 6 | 5 -> 4 or Q -> K | Q -> J</p>
+    <p>However, it can also wrap around sequentially. 1 (A) can go to 13 (K) and vice versa.</p>
+    <p>A -> 2 | A -> K or K -> A | K -> Q</p>
+    <p>On your first turn you click on a card. That becomes your active card. From there you find as many matches as possible until you can't. When there are no other possible plays you must select a card from the face down pile. The card you select will become your new active card. Try to remove all cards from the field and challenge yourself to make big combos so that way you have some cards in your pile left over.</p>
+    <table>
+      <tr>
+        <th>Card</th>
+        <th>Value</th>
+      </tr>
+      <tr>
+        <td>A</td>
+        <td>1</td>
+      </tr>
+      <tr>
+        <td>J</td>
+        <td>11</td>
+      </tr>
+      <tr>
+        <td>Q</td>
+        <td>12</td>
+      </tr>
+      <tr>
+        <td>K</td>
+        <td>13</td>
+      </tr>
+    </table>
+  </div>
   <script src="script.js"></script> 
 </body>
 </html>

@@ -1,20 +1,43 @@
 body {
-  overflow: hidden;
   background-color: #494949;
   display: flex;
+  flex-direction: column;
   align-items: center;
-  justify-content: center;
-  height: 100vh; /* Set the body to take up the full height of the viewport */
+  justify-content: flex-start;
+  height: 100vh;
+  margin: 0;
+  padding-top: 20px;
+}
+
+h1 {
+  color: white;
+  margin-bottom: 20px;
+}
+h2 {
+  color: white;
+  margin-bottom: 20px;
 }
 
 canvas {
-  box-sizing: unset;
   image-rendering: pixelated;
-  background-color: #ffff;
-  transform: scale(4);
-  background-color: #ffffff;
-  image-rendering: pixelated;
+  background-color: #c48040;
+  width: 700px;
+  height: 456px;
+  border: 2px solid black;
 }
+
+#tutorial {
+  text-align: center;
+  background-color: #6ac54c;
+  width: 700px;
+  border: 2px solid black;
+  font-size: 20px;
+}
+
+table, th, td {
+  border: 1px solid;
+}
+
 /* 
 body {
   display: flex;

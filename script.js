@@ -137,15 +137,13 @@ function findClickable() {
     for (let col = 0; col < cardGrid[0].length ; col++) {
         for (let row = 0; row < cardGrid.length; row++) {
             if (row == cardGrid.length -1 ) {
-                let goodRow = 0;
-                for (let card = row; card > 0; card--) {
+                for (let card = row; card >= 0; card--) {
                     if (cardGrid[card][col].clicked != true) {
                         console.log(card);
-                        goodRow = card;
+                        clickCards.push({"row": card, "col": col});
                         break;
                     }
                 }
-                clickCards.push({"row": goodRow, "col": col});
             }
         }
     }
@@ -212,7 +210,7 @@ document.addEventListener('pointerdown', (event) => {
     for (let i = 0; i < clickCards.length; i++) {
         let clickableCard = cardGrid[clickCards[i].row][clickCards[i].col];
         if ((mouseCoords.x < clickableCard.endCoords.x + cardWidth && mouseCoords.x > clickableCard.endCoords.x) &&
-        (mouseCoords.y > clickableCard.endCoords.y && mouseCoords.y < clickableCard.endCoords.y + cardHeight)) {
+        (mouseCoords.y > clickableCard.endCoords.y && mouseCoords.y < clickableCard.endCoords.y + cardHeight+yOffset)) {
             console.log(clickableCard);
             console.log(`You clicked ${clickableCard.name}`);
             clickableCard.clicked = true;
