@@ -30,3 +30,5 @@ However they go to the wrong angle
 Fixed the cards going at the wrong angle and they instead go to a line like how it works in pocket card jockey
 ## 4/6/25
 Made the line that the cards go into look better by appending the right edge of the card and drawing that. Added tutorial and changed colors. Fixed error in the click checking. Also fixed the issue of it still thinking the last card in the row is still clickable
+## 4/7/25
+Removed the letters in the code and fixed the 1 image to A. I can just have the images mean their numbers

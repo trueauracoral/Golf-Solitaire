@@ -1,5 +1,5 @@
-let cardDeck = ["jb", "jb", "jr", "jr","qb","qb", "qr","qr", "kb", "kb","kr", "kr"];
-for (let i = 1; i < 11; i++) {
+let cardDeck = [];
+for (let i = 1; i < 14; i++) {
     cardDeck.push(`${i}b`);
     cardDeck.push(`${i}b`);
     cardDeck.push(`${i}r`);
@@ -58,21 +58,6 @@ function vec2(x, y) {
     return {x: x, y: y};
 }
 
-let cardConvert = {
-    "1": 1,
-    "2": 2,
-    "3": 3,
-    "4": 4,
-    "5": 5,
-    "6": 6,
-    "7": 7,
-    "8": 8,
-    "9": 9,
-    "10": 10,
-    "j": 11,
-    "q": 12,
-    "k": 13,
-}
 let lastClickedCard = null;
 
 class Card {
