@@ -72,7 +72,7 @@ class Card {
         this.currentCoords = vec2(this.startCoords.x, this.startCoords.y);
         this.name = this.cardImage.src.split("/");
         this.name = this.name[this.name.length -1].split(".png")[0];
-        this.number = cardConvert[this.name[0]];
+        this.number = parseInt(this.name.match(/\d/g).join(""));
         this.clicked = false;
     }
     update() {
