@@ -60,6 +60,22 @@ function vec2(x, y) {
 
 let lastClickedCard = null;
 
+let PLAYABLE = {
+    1: [13, 2],
+    2: [1, 3],
+    3: [2, 4],
+    4: [3, 5],
+    5: [4, 6],
+    6: [5, 7],
+    7: [6, 8],
+    8: [7, 9],
+    9: [8, 10],
+    10: [9, 11],
+    11: [10, 12],
+    12: [11, 13],
+    13: [12, 1],
+}
+
 class Card {
     constructor(startCoords, endCoords, cardImage) {
         this.startCoords = startCoords;
@@ -115,6 +131,12 @@ for (let i = 0; i < 5; i++) {
     cardGrid.push(cardRow);
     cardRow = [];
 }
+
+for (let i = 0; i < 17; i++) {
+    let card = cardDeck[cardCount + i];
+    cardDeck[cardCount + i] = new Card(startCoords, startCoords, card)
+}
+console.log(cardDeck);
 console.log(cardGrid);
 let clickCards = [];
 function findClickable() {
@@ -140,11 +162,11 @@ findClickable();
 let cardCounter = 0;
 function gameUpdate() {
     //console.log(cardDeck);
-    for (let card = 0; card < 35; card++) {
+    for (let card = 0; card < 52; card++) {
         if (cardDeck[card].finished != true) {
             cardDeck[card].update();
         } else if (cardDeck[card].finished == true) {
-            flipCardSound.play();
+            //flipCardSound.play();
         }
     }
 }
@@ -162,6 +184,7 @@ function gameDraw() {
         ctx.drawImage(hiddenImage, startCoords.x-27-2*i+cardWidth, startCoords.y);
     }
     ctx.drawImage(backImage,startCoords.x,startCoords.y);
+    ctx.strokeRect(startCoords.x, startCoords.y, cardWidth, cardHeight);
     ctx.strokeStyle = "red"; // Bounding box color
     for (let i = 0; i < clickCards.length; i++) {
         let clickCard = cardGrid[clickCards[i].row][clickCards[i].col];
@@ -176,36 +199,60 @@ function gameLoop() {
     
     gameUpdate();
     gameDraw()
-    
 }
 function getMousePosition(canvas, event) {
     let rect = canvas.getBoundingClientRect();
     let x = Math.floor((event.clientX - rect.left) / 4) + 1;
-    let y = Math.floor((event.clientY - rect.top) / 4);
+    let y = Math.floor((event.clientY - rect.top) / 4) - 10;
     return {x: x, y: y};
 }
 
 let offsetCounter = 0;
+
+cardCount = 35;
 document.addEventListener('pointerdown', (event) => {
     //console.log("MOUSE CLICKED");
     var mouseCoords = getMousePosition(canvas, event);
     console.log(mouseCoords);
-    console.log(clickCards);
     //console.log(clickCards);
+    if ((mouseCoords.x < startCoords.x + cardWidth && mouseCoords.x > startCoords.x) &&
+        (mouseCoords.y < startCoords.y + cardHeight && mouseCoords.y > startCoords.y)) {
+            console.log("DO YOU WANT MORE CARDS");
+            console.log(cardDeck[cardCount])
+            newCard = cardDeck[cardCount];
+            newCard.clicked = true;
+            newCard.endCoords = vec2(startCoords.x -25 - 2*offsetCounter, startCoords.y);
+            offsetCounter++;
+            newCard.finished = false;
+            newCard.speed = 15;
+            lastClickedCard = newCard;
+            cardCount++;
+        }
     for (let i = 0; i < clickCards.length; i++) {
         let clickableCard = cardGrid[clickCards[i].row][clickCards[i].col];
         if ((mouseCoords.x < clickableCard.endCoords.x + cardWidth && mouseCoords.x > clickableCard.endCoords.x) &&
         (mouseCoords.y > clickableCard.endCoords.y && mouseCoords.y < clickableCard.endCoords.y + cardHeight+yOffset)) {
+            function clickACard() {
+                clickableCard.clicked = true;
+                clickableCard.startCoords = vec2(clickableCard.currentCoords.x, clickableCard.currentCoords.y);
+                clickableCard.endCoords = vec2(startCoords.x -25 - 2*offsetCounter, startCoords.y);
+                offsetCounter++;
+                clickableCard.finished = false;
+                clickableCard.speed = 15;
+                lastClickedCard = clickableCard;
+            }
             console.log(clickableCard);
             console.log(`You clicked ${clickableCard.name}`);
-            clickableCard.clicked = true;
-            clickableCard.startCoords = vec2(clickableCard.currentCoords.x, clickableCard.currentCoords.y);
-            clickableCard.endCoords = vec2(startCoords.x -25 - 2*offsetCounter, startCoords.y);
-            offsetCounter++;
-            clickableCard.finished = false;
-            clickableCard.speed = 15;
+            if (offsetCounter == 0) {
+                clickACard();
+            }
+            console.log(lastClickedCard);
+            console.log(PLAYABLE[lastClickedCard.number])
+            let options = PLAYABLE[lastClickedCard.number];
+            if (clickableCard.number == options[0] || clickableCard.number == options[1]) {
+                clickACard();
+            }
             findClickable();
-            lastClickedCard = clickableCard;
         }
     }
 });
