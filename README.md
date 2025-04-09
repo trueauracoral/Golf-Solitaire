@@ -6,10 +6,10 @@ This is Golf Solitaire written in JS canvas
 - [X] Draw Cards
 - [X] Animate Cards going to position
 - [X] Be able to detect click on cards
-- [ ] set active card
+- [X] set active card
 - [X] Move the card from the field to the bottom in a line.
-- [ ] Make sure that you can only click card that matches your active
-- [ ] Count how many cards are in the pile
+- [X] Make sure that you can only click card that matches your active
+- [X] Count how many cards are in the pile
 - [ ] Count how many clicks you did.
 ## Polish
 - [-] Add sfx
@@ -32,3 +32,5 @@ Fixed the cards going at the wrong angle and they instead go to a line like how 
 Made the line that the cards go into look better by appending the right edge of the card and drawing that. Added tutorial and changed colors. Fixed error in the click checking. Also fixed the issue of it still thinking the last card in the row is still clickable
 ## 4/7/25
 Removed the letters in the code and fixed the 1 image to A. I can just have the images mean their numbers
+## 4/8/25
+Made it so you can pull cards from pile set active card and choose card that matches as well as added font and card pile counter.

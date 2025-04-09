@@ -9,13 +9,24 @@ body {
   padding-top: 20px;
 }
 
+@font-face {
+  font-family: publicPixel;
+  src: url(font/PublicPixel.ttf);
+}
+
 h1 {
+  font-family: publicPixel;
   color: white;
   margin-bottom: 20px;
 }
 h2 {
   color: white;
+  font-family: publicPixel;
   margin-bottom: 20px;
+}
+p {
+  font-size: 15px;
+  font-family: publicPixel;
 }
 
 canvas {
@@ -36,51 +47,6 @@ canvas {
 
 table, th, td {
   border: 1px solid;
+  font-family: publicPixel;
+  font-size: 15px;
 }
-
-/* 
-body {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 100vh;
-  margin: 0;
-  gap: 10px;
-}
-
-.card {
-  width: 100px;
-  height: 150px;
-  border-radius: 10px;
-  border: 2px solid #000;
-  background-color: #fff;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  align-items: center;
-  padding: 5px;
-  position: relative;
-  font-weight: bold;
-}
-
-.card .corner {
-  font-size: 20px;
-  position: absolute;
-  top: 5px;
-  left: 5px;
-}
-
-.card .center {
-  font-size: 55px;
-  top: 33%;
-  position: relative;
-}
-
-.red {
-  color: red;
-}
-
-.black {
-  color: black;
-} 
-*/

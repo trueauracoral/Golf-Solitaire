@@ -58,6 +58,36 @@ function vec2(x, y) {
     return {x: x, y: y};
 }
 
+const loadFont = () => {
+    const font = new FontFace('PixelFont', 'url(./font/3-by-5-pixel-font.ttf)');
+    font.load().then((loadedFont) => {
+        document.fonts.add(loadedFont);
+        ctx.font = "8px 'PixelFont'";
+    });
+};
+
+loadFont();
+
+function drawPixelText(text, x, y, outline, color="black") {
+    ctx.imageSmoothingEnabled = false; 
+    ctx.textBaseline = 'top';
+    ctx.fillStyle = color; 
+    
+    charLength = text.toString().length;
+    if (charLength == 2) {
+        x -= 4
+    }
+
+    if (outline) {
+        ctx.fillStyle = "#ffffff";
+        ctx.lineWidth = 2;
+        ctx.strokeStyle = 'black';
+        ctx.strokeText(text, x, y);
+    }
+
+    ctx.fillText(text, x, y);
+}
+
 let lastClickedCard = null;
 
 let PLAYABLE = {
@@ -184,12 +214,13 @@ function gameDraw() {
         ctx.drawImage(hiddenImage, startCoords.x-27-2*i+cardWidth, startCoords.y);
     }
     ctx.drawImage(backImage,startCoords.x,startCoords.y);
-    ctx.strokeRect(startCoords.x, startCoords.y, cardWidth, cardHeight);
-    ctx.strokeStyle = "red"; // Bounding box color
-    for (let i = 0; i < clickCards.length; i++) {
-        let clickCard = cardGrid[clickCards[i].row][clickCards[i].col];
-        ctx.strokeRect(parseInt(clickCard.endCoords.x), clickCard.endCoords.y, cardWidth, cardHeight);
-    }
+    drawPixelText(52-cardCount, canvas.width - 10, canvas.height-35, false, "#323232");
+    //ctx.strokeRect(startCoords.x, startCoords.y, cardWidth, cardHeight);
+    //ctx.strokeStyle = "red"; // Bounding box color
+    //for (let i = 0; i < clickCards.length; i++) {
+    //    let clickCard = cardGrid[clickCards[i].row][clickCards[i].col];
+    //    ctx.strokeRect(parseInt(clickCard.endCoords.x), clickCard.endCoords.y, cardWidth, cardHeight);
+    //}
 }
 
 function gameLoop() {
@@ -215,6 +246,7 @@ document.addEventListener('pointerdown', (event) => {
     var mouseCoords = getMousePosition(canvas, event);
     console.log(mouseCoords);
     //console.log(clickCards);
+    console.log(52-cardCount);
     if ((mouseCoords.x < startCoords.x + cardWidth && mouseCoords.x > startCoords.x) &&
         (mouseCoords.y < startCoords.y + cardHeight && mouseCoords.y > startCoords.y)) {
             console.log("DO YOU WANT MORE CARDS");
