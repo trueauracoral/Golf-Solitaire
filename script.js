@@ -40,12 +40,15 @@ shuffle(cardDeck);
 const canvas = document.getElementById('canvas');
 
 const ctx = canvas.getContext('2d');
+let scalingFactor = 4;
+canvas.width =175 * scalingFactor;
+canvas.height = 100 * scalingFactor;
+ctx.scale(scalingFactor, scalingFactor);
 
-canvas.width =175;
-canvas.height = 100;
-
-const halfWidth = canvas.width / 2;
-const halfHeight = canvas.height / 2;
+let width = canvas.width / scalingFactor
+let height = canvas.height / scalingFactor
+const halfWidth = width / 2;
+const halfHeight = height / 2;
 let cardWidth = 16;
 let cardHeight = 21;
 
@@ -53,6 +56,8 @@ ctx.imageSmoothingEnabled= false
 
 let backImage = loadImage("./assets/back.png");
 let hiddenImage = loadImage("./assets/hiddencard.png")
+
+let solvedCards = 0;
 
 function vec2(x, y) {
     return {x: x, y: y};
@@ -213,8 +218,12 @@ function gameDraw() {
     for (let i = 0; i < offsetCounter; i++) {
         ctx.drawImage(hiddenImage, startCoords.x-27-2*i+cardWidth, startCoords.y);
     }
+    if (solvedCards == 35) {
+        drawPixelText("You Won!", halfWidth-20, halfHeight - 4, false, "#323232");
+    }
     ctx.drawImage(backImage,startCoords.x,startCoords.y);
-    drawPixelText(52-cardCount, canvas.width - 10, canvas.height-35, false, "#323232");
+    drawPixelText(52-cardCount, width - 10, height-35, false, "#323232");
+    drawPixelText(`${solvedCards}/35`, 10, 1, false, "#323232");
     //ctx.strokeRect(startCoords.x, startCoords.y, cardWidth, cardHeight);
     //ctx.strokeStyle = "red"; // Bounding box color
     //for (let i = 0; i < clickCards.length; i++) {
@@ -247,8 +256,9 @@ document.addEventListener('pointerdown', (event) => {
     console.log(mouseCoords);
     //console.log(clickCards);
     console.log(52-cardCount);
-    if ((mouseCoords.x < startCoords.x + cardWidth && mouseCoords.x > startCoords.x) &&
-        (mouseCoords.y < startCoords.y + cardHeight && mouseCoords.y > startCoords.y)) {
+    if ((52 - cardCount) != 0) {
+        if ((mouseCoords.x < startCoords.x + cardWidth && mouseCoords.x > startCoords.x) &&
+            (mouseCoords.y < startCoords.y + cardHeight && mouseCoords.y > startCoords.y)) {
             console.log("DO YOU WANT MORE CARDS");
             console.log(cardDeck[cardCount])
             newCard = cardDeck[cardCount];
@@ -260,6 +270,7 @@ document.addEventListener('pointerdown', (event) => {
             lastClickedCard = newCard;
             cardCount++;
         }
+    }
     for (let i = 0; i < clickCards.length; i++) {
         let clickableCard = cardGrid[clickCards[i].row][clickCards[i].col];
         if ((mouseCoords.x < clickableCard.endCoords.x + cardWidth && mouseCoords.x > clickableCard.endCoords.x) &&
@@ -282,6 +293,7 @@ document.addEventListener('pointerdown', (event) => {
             console.log(PLAYABLE[lastClickedCard.number])
             let options = PLAYABLE[lastClickedCard.number];
             if (clickableCard.number == options[0] || clickableCard.number == options[1]) {
+                solvedCards++;
                 clickACard();
             }
             findClickable();

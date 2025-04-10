@@ -10,7 +10,7 @@ This is Golf Solitaire written in JS canvas
 - [X] Move the card from the field to the bottom in a line.
 - [X] Make sure that you can only click card that matches your active
 - [X] Count how many cards are in the pile
-- [ ] Count how many clicks you did.
+- [X] Win Condition
 ## Polish
 - [-] Add sfx
 - [X] Add tutorial
