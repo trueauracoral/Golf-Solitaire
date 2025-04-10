@@ -276,6 +276,7 @@ document.addEventListener('pointerdown', (event) => {
         if ((mouseCoords.x < clickableCard.endCoords.x + cardWidth && mouseCoords.x > clickableCard.endCoords.x) &&
         (mouseCoords.y > clickableCard.endCoords.y && mouseCoords.y < clickableCard.endCoords.y + cardHeight+yOffset)) {
             function clickACard() {
+                solvedCards++;
                 clickableCard.clicked = true;
                 clickableCard.startCoords = vec2(clickableCard.currentCoords.x, clickableCard.currentCoords.y);
                 clickableCard.endCoords = vec2(startCoords.x -25 - 2*offsetCounter, startCoords.y);
@@ -293,7 +294,6 @@ document.addEventListener('pointerdown', (event) => {
             console.log(PLAYABLE[lastClickedCard.number])
             let options = PLAYABLE[lastClickedCard.number];
             if (clickableCard.number == options[0] || clickableCard.number == options[1]) {
-                solvedCards++;
                 clickACard();
             }
             findClickable();
