@@ -12,7 +12,7 @@ This is Golf Solitaire written in JS canvas
 - [X] Count how many cards are in the pile
 - [X] Win Condition
 ## Polish
-- [-] Add sfx
+- [X] Add sfx
 - [X] Add tutorial
 - [ ] Timer
 - [ ] Record System
@@ -34,3 +34,7 @@ Made the line that the cards go into look better by appending the right edge of 
 Removed the letters in the code and fixed the 1 image to A. I can just have the images mean their numbers
 ## 4/8/25
 Made it so you can pull cards from pile set active card and choose card that matches as well as added font and card pile counter.
+## 4/10/25
+I made it so that you can see how many cards were conquered and also added win screen.
+## 4/13/25 
+I fixed the flip card sound effect to play more or less at the right time.

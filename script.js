@@ -15,14 +15,19 @@ function createAudio(src) {
     audio.volume = 1;
     //audio.loop   = options.loop;
     audio.src = src;
-    audio.playbackRate = 7;
+    audio.playbackRate = 4;
     return audio;
 }
+
 for (let i = 0; i < cardDeck.length; i ++) {
     cardDeck[i] = loadImage(`./assets/${cardDeck[i]}.png`);
 }
 let flipCardSound = createAudio("./sound/flipcard.mp3");
-
+function playFlipSound() {
+    flipCardSound.volume = 1;
+    flipCardSound.playbackRate = 3;
+    flipCardSound.play();
+}
 //https://stackoverflow.com/questions/2450954/how-to-randomize-shuffle-a-javascript-array
 function shuffle(array) {
     let currentIndex = array.length;
@@ -119,6 +124,7 @@ class Card {
         this.angle = 0;
         this.speed = 2;
         this.finished = false;
+        this.soundPlayed = false; // <-- add this
         this.distance = 0;
         this.currentCoords = vec2(this.startCoords.x, this.startCoords.y);
         this.name = this.cardImage.src.split("/");
@@ -133,7 +139,15 @@ class Card {
         if (distanceTraveled > this.distance) {
             this.currentCoords.x = this.endCoords.x;
             this.currentCoords.y = this.endCoords.y;
-            this.finished = true;
+            if (!this.finished) {
+                this.finished = true;
+
+                if (!this.soundPlayed) {
+                    //flipCardSound.currentTime = 0;
+                    playFlipSound();
+                    this.soundPlayed = true;
+                }
+            }
         } else {
             this.currentCoords.x += this.speed * Math.cos(this.angle);
             this.currentCoords.y += this.speed * Math.sin(this.angle);
@@ -269,6 +283,7 @@ document.addEventListener('pointerdown', (event) => {
             newCard.speed = 15;
             lastClickedCard = newCard;
             cardCount++;
+            playFlipSound();
         }
     }
     for (let i = 0; i < clickCards.length; i++) {
@@ -284,6 +299,7 @@ document.addEventListener('pointerdown', (event) => {
                 clickableCard.finished = false;
                 clickableCard.speed = 15;
                 lastClickedCard = clickableCard;
+                playFlipSound();
             }
             console.log(clickableCard);
             console.log(`You clicked ${clickableCard.name}`);
